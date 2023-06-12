@@ -1,10 +1,13 @@
 const hre = require("hardhat");
 
 async function main() {
-  const lock = await hre.ethers.deployContract("Lock");
-  const add = await lock.getAddress();
+  const token = await ethers.getContractFactory("NFTMarketPlace"); //instances contract
 
-  console.log("Token address:", add);
+  const hardhatTokent = await token.deploy();
+
+  const ContractAdd = await hardhatTokent.getAddress();
+
+  console.log(ContractAdd);
 }
 
 main()
