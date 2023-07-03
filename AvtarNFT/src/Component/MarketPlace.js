@@ -89,6 +89,7 @@ export default function MarketPlace() {
 
     updateFetched(true);
     updateData(items);
+    setFetch(false);
   }
 
   // if (!dataFetched) {
@@ -97,11 +98,10 @@ export default function MarketPlace() {
 
   useEffect(() => {
     return () => {
-      setFetch(true);
       getAllNFTs();
-      setFetch(false);
+      setFetch(true);
     };
-  }, [dataFetched, fetch]);
+  }, [dataFetched]);
 
   return (
     <>
@@ -135,7 +135,7 @@ export default function MarketPlace() {
         style={{ backgroundColor: "rgb(27 10 41)" }}
       >
         {fetch ? (
-          <div>
+          <div style={{ position: "relative", left: "45vw" }}>
             <RotatingLines
               strokeColor="grey"
               strokeWidth="5"
@@ -181,10 +181,10 @@ export default function MarketPlace() {
           <div
             style={{
               position: "fixed",
-              top:"15vh",
-              left:"10vw",
-              height:"77vh",
-              width:"79vw",
+              top: "15vh",
+              left: "10vw",
+              height: "77vh",
+              width: "79vw",
               backgroundColor: "rgba(18,0,41,0.75)",
             }}
             className="rounded border shadow-lg container"

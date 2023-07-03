@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { GetIpfsUrlFromPinata } from "../utils";
 import axios from "axios";
 import Marketplace from "../NFTMarket.json";
-import { RotatingLines } from "react-loader-spinner";
+import { ProgressBar, RotatingLines } from "react-loader-spinner";
 
 export default function NFTPage({ id, setOpenWind }) {
   const [data, updateData] = useState({});
+  const [start, setStart] = useState(false);
   const [fetch, setFetch] = useState(false);
   const [currAddress, updateCurrAddress] = useState("0x");
 
@@ -43,6 +44,7 @@ export default function NFTPage({ id, setOpenWind }) {
   }
 
   async function buyNFT(tokenId) {
+    setStart(true);
     try {
       const ethers = require("ethers");
       //After adding your Hardhat network to your metamask, this code will get providers and signers
@@ -67,26 +69,31 @@ export default function NFTPage({ id, setOpenWind }) {
     } catch (e) {
       alert("Upload Error" + e);
     }
+    setStart(false);
   }
 
   useEffect(() => {
     return () => {
-      setFetch(true);
       getNFTData(id);
-      setFetch(false);
+      setFetch(true);
+      setTimeout(() => {
+        setFetch(false);
+      }, 1500);
     };
   }, [id]);
 
   return (
     <>
       {fetch ? (
-        <div>
-          <RotatingLines
-            strokeColor="grey"
-            strokeWidth="5"
-            animationDuration="0.75"
-            width="96"
-            visible={true}
+        <div className="text-center">
+          <ProgressBar
+            height="80"
+            width="80"
+            ariaLabel="progress-bar-loading"
+            wrapperStyle={{}}
+            wrapperClass="progress-bar-wrapper"
+            borderColor="white"
+            barColor="white"
           />
         </div>
       ) : (
@@ -143,9 +150,9 @@ export default function NFTPage({ id, setOpenWind }) {
                 <span
                   className="border p-2 "
                   onClick={() => buyNFT(id)}
-                  style={{ cursor: "pointer" ,backgroundColor:"#362955"}}
+                  style={{ cursor: "pointer", backgroundColor: "#362955" }}
                 >
-                  <b>Make it Yours</b>
+                  {start ? <b>Buying...</b> : <b>Make it Yours</b>}
                 </span>
               ) : (
                 <div>You are the owner of this NFT</div>

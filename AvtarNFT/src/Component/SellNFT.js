@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { uploadFileToIPFS, uploadJSONToIPFS } from "../../src/pinata";
 import Marketplace from "../NFTMarket.json";
+import { Bars, FallingLines, LineWave } from "react-loader-spinner";
 const ethers = require("ethers");
 
 export default function SellNFT() {
+  const [load, setLoad] = useState(false);
+  const [load1, setLoad1] = useState(false);
   const [fileImg, setFileImg] = useState();
   const [fileURL, setFileURL] = useState(null);
   const [displayImage, setdisplayImage] = useState(false);
@@ -14,10 +17,10 @@ export default function SellNFT() {
   });
 
   const changeFile = async (e) => {
+    setLoad(true);
     var file = e.target.files[0];
     setFileImg(URL.createObjectURL(e.target.files[0]));
     //check for file extension
-    setdisplayImage(true);
 
     try {
       const response = await uploadFileToIPFS(file);
@@ -29,6 +32,9 @@ export default function SellNFT() {
     } catch (e) {
       console.log("Error during file upload", e);
     }
+
+    setdisplayImage(true);
+    setLoad(false);
   };
 
   async function uploadMetadataToIPFS() {
@@ -58,7 +64,8 @@ export default function SellNFT() {
   }
 
   const listNFT = async (e) => {
-    e.preventDefault();
+    setLoad1(true);
+    // e.preventDefault();
 
     try {
       const metadataURL = await uploadMetadataToIPFS();
@@ -92,6 +99,7 @@ export default function SellNFT() {
     } catch (e) {
       alert("Upload error" + e);
     }
+    setLoad1(false);
   };
 
   return (
@@ -99,9 +107,7 @@ export default function SellNFT() {
       <div className="d-flex flex-row flex-wrap">
         <div
           className="m-5 border-bottom p-3 border-end rounded shadow"
-          style={{ width: "40vw" ,
-        backgroundColor:"#e5e4e487"}}
-
+          style={{ width: "40vw", backgroundColor: "#e5e4e487" }}
         >
           <div className="mb-3">
             <label
@@ -159,28 +165,65 @@ export default function SellNFT() {
               }
             />
           </div>
-          <div className="mb-3">
-            <label
-              htmlFor="formFile"
-              className="text-dark text-uppercase form-label font-weight-bold"
-            >
-              Image Of NFT
-            </label>
-            <input
-              name="ImageNFT"
-              className="form-control "
-              type="file"
-              id="formFile"
-              onChange={changeFile}
-            />
+          <div className="d-flex">
+            <div className="mb-3">
+              <label
+                htmlFor="formFile"
+                className="text-dark text-uppercase form-label font-weight-bold"
+              >
+                Image Of NFT
+              </label>
+              <input
+                name="ImageNFT"
+                className="form-control "
+                type="file"
+                id="formFile"
+                onChange={changeFile}
+              />
+            </div>
+
+            {load ? (
+              <div className="d-flex">
+                <LineWave
+                  height="12vh"
+                  width="15vw"
+                  color="blue"
+                  ariaLabel="line-wave"
+                  wrapperStyle={{}}
+                  visible={true}
+                />
+              </div>
+            ) : (
+              <div></div>
+            )}
           </div>
-          <button
-            onClick={listNFT}
-            className="bg-grey rounded w-100 "
-            id="list-button"
-          >
-            List NFT
-          </button>
+
+          {load1 ? (
+            <div className="d-flex" style={{ justifyContent: "center" }}>
+              <div>
+                <Bars
+                  height="40"
+                  width="80"
+                  color="lightblue"
+                  ariaLabel="bars-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
+                  visible={true}
+                />
+                <p style={{ color: "lightblue" }}>
+                  <b>Uploading...</b>
+                </p>
+              </div>
+            </div>
+          ) : (
+            <button
+              onClick={listNFT}
+              className="bg-grey rounded w-100 "
+              id="list-button"
+            >
+              List NFT
+            </button>
+          )}
         </div>
 
         {displayImage ? (
