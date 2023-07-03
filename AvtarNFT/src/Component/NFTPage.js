@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { GetIpfsUrlFromPinata } from "../utils";
 import axios from "axios";
 import Marketplace from "../NFTMarket.json";
 import { RotatingLines } from "react-loader-spinner";
 
-export default function NFTPage() {
-  const params = useParams();
-  const id = params.id;
-
+export default function NFTPage({ id, setOpenWind }) {
   const [data, updateData] = useState({});
   const [fetch, setFetch] = useState(false);
   const [currAddress, updateCurrAddress] = useState("0x");
@@ -94,38 +90,70 @@ export default function NFTPage() {
           />
         </div>
       ) : (
-        <div
-          className="container d-flex flex-wrap flex-row m-5 "
-          style={{ alignItems: "center", justifyContent: "space-evenly" }}
-        >
+        <main style={{ position: "relative" }}>
           <div>
-            <img src={data.image} alt="NA" className="w-50" />
-          </div>
-          <div className="">
-            <div>Name: {data.name}</div>
-            <div>Description: {data.description}</div>
-            <div>
-              Price: <span className="">{data.price + " ETH"}</span>
+            <div
+              onClick={() => {
+                setOpenWind(false);
+              }}
+            >
+              <h4 className="text-light " style={{ cursor: "pointer" }}>
+                &#10008;
+              </h4>
             </div>
-            <div>
-              Owner: <span className="text-sm">{data.owner}</span>
-            </div>
-            <div>
-              Seller: <span className="text-sm">{data.seller}</span>
-            </div>
-            <div>
-              {currAddress != data.owner && currAddress != data.seller ? (
-                <button className="" onClick={() => buyNFT(id)}>
-                  Buy this NFT
-                </button>
-              ) : (
-                <div className="">You are the owner of this NFT</div>
-              )}
 
-              <div className="">{"message"}</div>
+            <div
+              className="d-flex flex-wrap container border-bottom rounded p-2"
+              style={{ justifyContent: "space-evenly" }}
+            >
+              <div>
+                <img src={data.image} alt="NA" width="320vw" height="320vh" />
+              </div>
+
+              {/* <div className="border-start"></div> */}
+              <div className="text-light border-start  p-2 mt-3">
+                <div>
+                  <b>Name:</b>
+                  <br></br> {data.name}
+                </div>
+                <br />
+                <div>
+                  <b>Description: </b>
+                  <br></br>
+                  {data.description}
+                </div>
+                <br />
+                <div>
+                  <b>Price:</b> <br></br>
+                  <span className="">{data.price + " ETH"}</span>
+                </div>
+                <br />
+                <div>
+                  <b>Owner:</b> <span className="text-sm">{data.owner}</span>
+                </div>
+                <div>
+                  <b>Seller: </b>
+                  <span className="text-sm">{data.seller}</span>
+                </div>
+              </div>
             </div>
+
+            <div className="text-center text-light mt-4 ">
+              {currAddress != data.owner && currAddress != data.seller ? (
+                <span
+                  className="border p-2 "
+                  onClick={() => buyNFT(id)}
+                  style={{ cursor: "pointer" ,backgroundColor:"#362955"}}
+                >
+                  <b>Make it Yours</b>
+                </span>
+              ) : (
+                <div>You are the owner of this NFT</div>
+              )}
+            </div>
+            <div className="text-center text-light mt-4">{"message"}</div>
           </div>
-        </div>
+        </main>
       )}
     </>
   );
