@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { GetIpfsUrlFromPinata } from "../utils";
+import { Link } from "react-router-dom";
 
 function NFTTile(prop) {
   const IPFSUrl = GetIpfsUrlFromPinata(prop.data.image);
@@ -21,6 +22,7 @@ function NFTTile(prop) {
     color: isHover ? "red" : "green",
     // position: "relative",
   };
+
   return (
     <div
       onClick={() => {
@@ -32,12 +34,30 @@ function NFTTile(prop) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div
-      // style={{ position: "absolute" }}
-      >
-        <img src={IPFSUrl} alt="NA" height="130vh" width="130vw" crossOrigin="anonymous" />
+      <div>
+        {prop.edit ? (
+          <Link
+            to={"/edit/" + prop.data.tokenId}
+            className="text-dark d-block text-end"
+            style={{ textDecoration: "none" }}
+          >
+            &#9998;
+          </Link>
+        ) : (
+          <></>
+        )}
+        <img
+          src={IPFSUrl}
+          alt="NA"
+          height="130vh"
+          width="130vw"
+          crossOrigin="anonymous"
+        />
         <div className="text-dark ">
-          <strong className="text-xl text-uppercase " style={{ textDecoration: "none" }}>
+          <strong
+            className="text-xl text-uppercase "
+            style={{ textDecoration: "none" }}
+          >
             {prop.data.name}
           </strong>
           <p className="display-inline" style={{ textDecoration: "none" }}>

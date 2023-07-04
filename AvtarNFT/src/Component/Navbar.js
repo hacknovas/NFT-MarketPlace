@@ -52,11 +52,11 @@ export default function Navbar() {
                 {userAdd === "" ? (
                   <b>connect to wallet</b>
                 ) : (
-                  <b>
+                  <Link to="/profile" style={{textDecoration:"none",color:"black",fontWeight:"bold"}}>
                     {userAdd.substring(0, 4) +
                       ".." +
                       userAdd.substring(userAdd.length - 5, userAdd.length)}
-                  </b>
+                  </Link>
                 )}
               </button>
             </div>

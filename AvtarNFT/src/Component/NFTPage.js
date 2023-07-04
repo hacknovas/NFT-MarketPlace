@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { GetIpfsUrlFromPinata } from "../utils";
 import axios from "axios";
-import Marketplace from "../NFTMarket.json";
+import Marketplace from "../NFTMarket.json";  
 import { ProgressBar, RotatingLines } from "react-loader-spinner";
 
 export default function NFTPage({ id, setOpenWind }) {
